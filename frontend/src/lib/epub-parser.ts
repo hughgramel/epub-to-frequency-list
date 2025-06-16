@@ -1,9 +1,18 @@
 import JSZip from 'jszip';
 
+// Define regular expressions as constants for performance.
+const DASHES_REGEX = /[—–-]/g;
+// Expanded to include brackets, parentheses, and special characters like ◆
+const PUNCTUATION_REGEX = /[.,¡!¿?:;()"“”«»\[\]◆]/g;
+const WHITESPACE_REGEX = /\s+/g;
+// New regex to remove all numbers
+const NUMBERS_REGEX = /\d+/g;
+
+
 /**
- * Parses an EPUB file using JSZip and extracts all its text content.
+ * Parses an EPUB file using JSZip and extracts all its text content, cleaning it into a list of words.
  * @param file The EPUB file object from the input.
- * @returns A Promise that resolves with the full text of the book.
+ * @returns A Promise that resolves with a single string of cleaned, whitespace-separated words.
  */
 export const getTextFromEpub = async (file: File): Promise<string> => {
   const zip = await JSZip.loadAsync(file);
@@ -44,7 +53,7 @@ export const getTextFromEpub = async (file: File): Promise<string> => {
   // 3. Get the ordered list of chapters from the spine
   const spineItemRefs = Array.from(opfDoc.querySelectorAll('spine itemref')).map(item => item.getAttribute('idref'));
 
-  let allText = '';
+  let allWords: string[] = [];
 
   // 4. Iterate through the chapters in order and extract their text
   for (const idref of spineItemRefs) {
@@ -60,10 +69,24 @@ export const getTextFromEpub = async (file: File): Promise<string> => {
       
       // Extract text from the body, which strips all HTML tags
       const textContent = chapterDoc.body?.textContent || '';
-      allText += textContent + '\n\n';
+
+      // Clean the text content using the pre-defined regex constants
+      const cleanedText = textContent
+        .toLowerCase()
+        .replace(DASHES_REGEX, ' ')
+        .replace(PUNCTUATION_REGEX, '')
+        .replace(NUMBERS_REGEX, '') // Remove numbers
+        .replace(WHITESPACE_REGEX, ' ')
+        .trim();
+      
+      // Split into words and filter out any empty strings or URLs
+      const words = cleanedText.split(' ').filter(word => {
+          return word.length > 0 && !word.startsWith('http');
+      });
+      allWords = allWords.concat(words);
     }
   }
 
-  return allText;
+  // Return a single string with all words separated by a space.
+  return allWords.join(' ');
 };
-
