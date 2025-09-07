@@ -70,8 +70,9 @@ export default function Home() {
       const data: AnalysisResult[] = await response.json();
       setResults(data);
 
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+      setError(errorMessage);
       console.error("Failed to process:", err);
     } finally {
       setIsLoading(false);
