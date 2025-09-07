@@ -54,8 +54,7 @@ export default function Home() {
         throw new Error('No file selected or text entered.');
       }
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
-      const response = await fetch(`${apiUrl}/api/analyze`, {
+      const response = await fetch('http://localhost:5001/api/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,9 +69,8 @@ export default function Home() {
       const data: AnalysisResult[] = await response.json();
       setResults(data);
 
-    } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-      setError(errorMessage);
+    } catch (err: any) {
+      setError(err.message);
       console.error("Failed to process:", err);
     } finally {
       setIsLoading(false);
