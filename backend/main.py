@@ -3,9 +3,21 @@ from flask_cors import CORS
 import spacy
 from collections import Counter
 import pprint
+import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
+# Configure CORS for production
+allowed_origins = [
+    "http://localhost:3000",  # Development
+    "https://your-frontend-url.vercel.app",  # Update this with your actual Vercel URL
+]
+
+# Add environment variable for additional origins
+if os.getenv('ALLOWED_ORIGINS'):
+    allowed_origins.extend(os.getenv('ALLOWED_ORIGINS').split(','))
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Load the Spanish spaCy model. This happens once when the server starts.
 print("Loading spaCy model for Spanish...")
@@ -67,5 +79,7 @@ def analyze_text():
     return jsonify(results)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    debug = os.environ.get('FLASK_ENV') != 'production'
+    app.run(debug=debug, host='0.0.0.0', port=port)
 
