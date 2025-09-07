@@ -27,9 +27,9 @@ A powerful web application that analyzes vocabulary frequency in EPUB books and 
 - **Copy to Clipboard**: Instantly copy all results for sharing
 - **Detailed Statistics**: Rank, frequency, percentage, and cumulative data
 
-## 🚀 Live Demo
+## 🚀 Getting Started
 
-[**Try it now on Vercel**](https://your-app-name.vercel.app) *(Update with your actual Vercel URL)*
+Follow the installation instructions below to run the application locally.
 
 ## 🛠️ Technology Stack
 
@@ -144,14 +144,15 @@ The app uses Tailwind CSS with a custom dark mode implementation. Modify `fronte
 
 ## 🚀 Deployment
 
-### Vercel (Frontend)
-1. Connect your GitHub repository to Vercel
-2. Set build command: `cd frontend && npm run build`
-3. Set output directory: `frontend/.next`
-4. Deploy!
+For production deployment, consider these options:
+
+### Frontend Deployment
+- **Netlify** - Easy static site deployment
+- **GitHub Pages** - Free hosting for open source projects
+- **AWS S3 + CloudFront** - Scalable and reliable
+- **Firebase Hosting** - Google's hosting platform
 
 ### Backend Deployment
-For production, consider deploying the Python backend to:
 - **Heroku** - Easy Python deployment
 - **Railway** - Modern platform with good Python support
 - **DigitalOcean App Platform** - Scalable and reliable
