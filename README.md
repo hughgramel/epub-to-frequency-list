@@ -1,6 +1,6 @@
 # 📚 Vocabulary Frequency Analyzer
 
-A powerful web application that analyzes vocabulary frequency in EPUB books and text to boost language learning comprehension. Perfect for language learners who want to identify the most important words in any text before diving into reading.
+A web application that analyzes vocabulary frequency in EPUB books and text to boost language learning comprehension. Perfect for language learners who want to identify the most important words in any text before diving into reading.
 
 ![Vocabulary Frequency Analyzer](https://img.shields.io/badge/Status-Live-brightgreen)
 ![Next.js](https://img.shields.io/badge/Next.js-15.3.3-black)
